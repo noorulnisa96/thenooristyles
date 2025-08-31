@@ -29,6 +29,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
     gap: 1.5rem;
+    margin-bottom: 3rem;
   }
   .product {
     background: #b3a2ce;
@@ -60,6 +61,50 @@
     font-size: 1.1rem;
     color: #f499c1;
   }
+  form {
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    padding: 1rem;
+    border: 2px solid #f499c1;
+    border-radius: 12px;
+    background: #fff0f6;
+  }
+  form h2 {
+    text-align: center;
+    color: #b35c85;
+  }
+  form label {
+    display: block;
+    margin: 0.5rem 0 0.2rem;
+    color: #6a1b4d;
+    font-weight: 600;
+  }
+  form input, form textarea {
+    width: 100%;
+    padding: 0.4rem;
+    border-radius: 6px;
+    border: 1px solid #b3a2ce;
+    font-size: 1rem;
+  }
+  form textarea {
+    resize: vertical;
+  }
+  form button {
+    margin-top: 1rem;
+    background: #f499c1;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.1rem;
+    transition: background 0.3s ease;
+  }
+  form button:hover {
+    background: #b35c85;
+  }
   footer {
     text-align: center;
     padding: 1rem;
@@ -72,14 +117,47 @@
 <body>
 <header>The Noori Styles</header>
 <main>
+
+  <form id="addProductForm">
+    <h2>Add a New Product</h2>
+    <label for="name">Product Name</label>
+    <input type="text" id="name" required placeholder="Enter product name" />
+
+    <label for="price">Price ($)</label>
+    <input type="number" id="price" required step="0.01" min="0" placeholder="Enter price" />
+
+    <label for="image">Image URL</label>
+    <input type="url" id="image" required placeholder="Enter image URL" />
+
+    <label for="description">Description</label>
+    <textarea id="description" rows="3" required placeholder="Enter description"></textarea>
+
+    <button type="submit">Add Product</button>
+  </form>
+
   <div class="products" id="products"></div>
 </main>
 <footer>© 2025 The Noori Styles</footer>
 
 <script>
+const PRODUCTS_JSON = 'products.json';
+
+// Load products.json and merge with locally added products from localStorage
 async function loadProducts() {
-  const res = await fetch('products.json');
-  const products = await res.json();
+  const res = await fetch(PRODUCTS_JSON);
+  const productsFromFile = await res.json();
+
+  // Load from localStorage (saved products)
+  const savedProducts = JSON.parse(localStorage.getItem('addedProducts') || '[]');
+
+  // Combine both lists (savedProducts can have duplicates if you want, but IDs should be unique ideally)
+  const allProducts = [...productsFromFile, ...savedProducts];
+
+  renderProducts(allProducts);
+  return allProducts;
+}
+
+function renderProducts(products) {
   const container = document.getElementById('products');
   container.innerHTML = '';
   products.forEach(product => {
@@ -89,13 +167,52 @@ async function loadProducts() {
       <img src="${product.image}" alt="${product.name}" />
       <h3>${product.name}</h3>
       <p>${product.description}</p>
-      <div class="price">$${product.price.toFixed(2)}</div>
+      <div class="price">$${parseFloat(product.price).toFixed(2)}</div>
     `;
     container.appendChild(div);
   });
 }
 
-loadProducts();
+function saveProduct(product) {
+  const saved = JSON.parse(localStorage.getItem('addedProducts') || '[]');
+  saved.push(product);
+  localStorage.setItem('addedProducts', JSON.stringify(saved));
+}
+
+document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('name').value.trim();
+  const price = parseFloat(document.getElementById('price').value);
+  const image = document.getElementById('image').value.trim();
+  const description = document.getElementById('description').value.trim();
+
+  if (!name || !price || !image || !description) {
+    alert('Please fill out all fields correctly.');
+    return;
+  }
+
+  const newProduct = {
+    id: Date.now(), // unique ID based on timestamp
+    name,
+    price,
+    image,
+    description
+  };
+
+  // Save to localStorage
+  saveProduct(newProduct);
+
+  // Reload products including the new one
+  const allProducts = await loadProducts();
+
+  // Clear form
+  e.target.reset();
+});
+
+window.onload = () => {
+  loadProducts();
+};
 </script>
 </body>
 </html>
