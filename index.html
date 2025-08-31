@@ -6,22 +6,17 @@
   <title>My Product Website</title>
   <style>
     body {font-family:"Poppins",sans-serif;margin:0;padding:0;background:#f9f9f9;color:#333;}
-    header {
-      background: linear-gradient(45deg, #ff6f61, #ff9966);
-      color:#fff;padding:1rem;text-align:center;
-      font-size:1.5rem;font-weight:bold;
-    }
+    header {background:linear-gradient(45deg,#ff6f61,#ff9966);color:#fff;padding:1rem;text-align:center;font-size:1.5rem;font-weight:bold;}
     .controls {display:flex;gap:1rem;justify-content:center;margin:1rem;flex-wrap:wrap;}
-    .controls select,.controls button {padding:0.5rem 1rem;border:none;border-radius:6px;font-size:1rem;cursor:pointer;}
-    .controls select {background:#fff;border:1px solid #ccc;}
-    .controls button {background:#333;color:#fff;}
+    .controls button {padding:0.5rem 1rem;border:none;border-radius:6px;font-size:1rem;cursor:pointer;background:#333;color:#fff;}
     .form-section {margin:1rem auto;padding:1rem;background:#fff;border-radius:10px;width:90%;max-width:500px;box-shadow:0 3px 8px rgba(0,0,0,0.1);}
     .form-section input,.form-section textarea {width:100%;margin:0.5rem 0;padding:0.6rem;border:1px solid #ccc;border-radius:6px;font-size:1rem;}
     .form-section button {background:linear-gradient(45deg,#ff6f61,#ff9966);color:#fff;padding:0.6rem;width:100%;border:none;border-radius:6px;cursor:pointer;font-size:1rem;}
-    .category {margin:2rem auto;padding:1rem;width:95%;max-width:1200px;}
-    .category h2 {border-bottom:2px solid #ff6f61;padding-bottom:0.5rem;color:#ff6f61;}
+    .category {margin:2rem auto;padding:1rem;width:95%;max-width:1200px;background:#fff;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+    .category h2 {border-bottom:2px solid #ff6f61;padding-bottom:0.5rem;color:#ff6f61;display:flex;justify-content:space-between;align-items:center;}
+    .category h2 button {font-size:0.9rem;padding:0.3rem 0.8rem;background:#333;color:#fff;border:none;border-radius:6px;cursor:pointer;}
     .products {display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem;}
-    .product {background:#fff;padding:1rem;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1);text-align:center;}
+    .product {background:#fafafa;padding:1rem;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1);text-align:center;}
     .product img {max-width:100%;height:150px;object-fit:cover;border-radius:8px;}
     .product h3 {margin:0.5rem 0;}
     .reset-btn {margin:2rem auto;display:block;background:red;color:#fff;padding:0.8rem 1.2rem;border:none;border-radius:6px;cursor:pointer;font-size:1rem;}
@@ -31,7 +26,7 @@
 <body>
   <header id="mainHeader">My Product Website</header>
 
-  <!-- Gradient color controls -->
+  <!-- Gradient controls -->
   <div class="theme-controls">
     <label>Choose Gradient: </label>
     <input type="color" id="color1" value="#ff6f61">
@@ -40,12 +35,11 @@
   </div>
 
   <div class="controls">
-    <select id="categorySelect"></select>
-    <button onclick="showForm()">Add Product</button>
     <button onclick="addCategory()">Add Category</button>
   </div>
 
   <div id="formContainer" class="form-section" style="display:none;">
+    <h3 id="formTitle">Add Product</h3>
     <input type="text" id="productName" placeholder="Product Name" required>
     <input type="number" id="productPrice" placeholder="Price (PKR)" required>
     <textarea id="productDesc" placeholder="Description (Optional)"></textarea>
@@ -58,6 +52,7 @@
 
   <script>
     let categories = JSON.parse(localStorage.getItem("categories")) || [];
+    let currentCategory = null; // track which category we're adding product to
     renderCategories();
 
     function addCategory() {
@@ -69,25 +64,22 @@
       }
     }
 
-    function showForm() {
-      if (categories.length === 0) {
-        alert("Please add a category first!");
-        return;
-      }
+    function showForm(categoryName) {
+      currentCategory = categoryName;
       document.getElementById("formContainer").style.display = "block";
+      document.getElementById("formTitle").innerText = `Add Product to ${categoryName}`;
     }
 
     function saveProduct() {
+      if (!currentCategory) {
+        alert("Please choose a category first.");
+        return;
+      }
       let name = document.getElementById("productName").value.trim();
       let price = document.getElementById("productPrice").value.trim();
       let desc = document.getElementById("productDesc").value.trim();
       let imageInput = document.getElementById("productImage");
-      let category = document.getElementById("categorySelect").value;
 
-      if (!category) {
-        alert("Please select a category.");
-        return;
-      }
       if (!name || !price) {
         alert("Name and Price are required!");
         return;
@@ -96,9 +88,8 @@
       let reader = new FileReader();
       reader.onload = function(e) {
         let imgData = e.target.result;
-        categories.find(c => c.name === category).products.push({
-          name, price, desc, image: imgData
-        });
+        let cat = categories.find(c => c.name === currentCategory);
+        cat.products.push({ name, price, desc, image: imgData });
         saveData();
         renderCategories();
         clearForm();
@@ -106,9 +97,8 @@
       if (imageInput.files[0]) {
         reader.readAsDataURL(imageInput.files[0]);
       } else {
-        categories.find(c => c.name === category).products.push({
-          name, price, desc, image: ""
-        });
+        let cat = categories.find(c => c.name === currentCategory);
+        cat.products.push({ name, price, desc, image: "" });
         saveData();
         renderCategories();
         clearForm();
@@ -125,14 +115,17 @@
 
     function renderCategories() {
       let container = document.getElementById("categoriesContainer");
-      let select = document.getElementById("categorySelect");
       container.innerHTML = "";
-      select.innerHTML = "";
-
       categories.forEach(cat => {
         let section = document.createElement("div");
         section.className = "category";
-        section.innerHTML = `<h2>${cat.name}</h2><div class="products"></div>`;
+        section.innerHTML = `
+          <h2>
+            ${cat.name}
+            <button onclick="showForm('${cat.name}')">+ Add Product</button>
+          </h2>
+          <div class="products"></div>
+        `;
         let productsContainer = section.querySelector(".products");
         cat.products.forEach(p => {
           let div = document.createElement("div");
@@ -146,11 +139,6 @@
           productsContainer.appendChild(div);
         });
         container.appendChild(section);
-
-        let option = document.createElement("option");
-        option.value = cat.name;
-        option.textContent = cat.name;
-        select.appendChild(option);
       });
     }
 
@@ -166,7 +154,7 @@
       }
     }
 
-    // 🎨 Apply Gradient Function
+    // 🎨 Gradient function
     function applyGradient() {
       let c1 = document.getElementById("color1").value;
       let c2 = document.getElementById("color2").value;
