@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Noori Styles - Product Showcase</title>
+  <title>The Noori Styles - Product Categories</title>
   <style>
     body {
       margin: 0;
@@ -19,49 +19,49 @@
       padding: 2rem 1rem;
       font-size: 2rem;
       font-weight: bold;
-      box-shadow: 0 4px 8px rgba(244, 153, 193, 0.4);
     }
     main {
       max-width: 960px;
       margin: 2rem auto;
       padding: 0 1rem;
     }
+    .section {
+      margin-bottom: 3rem;
+      border: 2px solid #f499c1;
+      border-radius: 12px;
+      background: #fff0f6;
+      padding: 1rem;
+    }
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #b35c85;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1.5rem;
-      margin-bottom: 3rem;
     }
     .product {
       background: #b3a2ce;
       border-radius: 12px;
       padding: 1rem;
-      box-shadow: 0 0 15px rgba(179, 162, 206, 0.5);
+      box-shadow: 0 0 10px rgba(179, 162, 206, 0.4);
       color: white;
       text-align: center;
-      transition: transform 0.3s ease;
       position: relative;
-    }
-    .product:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(244, 153, 193, 0.7);
     }
     .product img {
       max-width: 100%;
       border-radius: 12px;
-      margin-bottom: 1rem;
-    }
-    .product h3 {
-      margin: 0 0 0.5rem;
-    }
-    .product p {
-      font-size: 0.95rem;
       margin-bottom: 0.5rem;
     }
     .price {
-      font-weight: bold;
-      font-size: 1.1rem;
       color: white;
+      font-weight: bold;
+      margin-top: 0.3rem;
     }
     .delete-btn {
       position: absolute;
@@ -76,35 +76,17 @@
       font-size: 0.8rem;
     }
     form {
-      max-width: 480px;
-      margin: 0 auto 2rem;
-      padding: 1rem;
-      border: 2px solid #f499c1;
-      border-radius: 12px;
-      background: #fff0f6;
-    }
-    form h2 {
-      text-align: center;
-      color: #b35c85;
-    }
-    form label {
-      display: block;
-      margin: 0.5rem 0 0.2rem;
-      color: #6a1b4d;
-      font-weight: 600;
+      margin: 1rem 0;
     }
     form input, form textarea {
       width: 100%;
       padding: 0.4rem;
+      margin-bottom: 0.5rem;
       border-radius: 6px;
-      border: 1px solid #b3a2ce;
+      border: 1px solid #ccc;
       font-size: 1rem;
     }
-    form textarea {
-      resize: vertical;
-    }
     form button {
-      margin-top: 1rem;
       background: #f499c1;
       border: none;
       padding: 0.6rem 1.2rem;
@@ -113,17 +95,26 @@
       font-weight: bold;
       cursor: pointer;
       width: 100%;
-      font-size: 1.1rem;
-      transition: background 0.3s ease;
     }
     form button:hover {
       background: #b35c85;
     }
+    #addSectionBtn {
+      display: block;
+      margin: 2rem auto;
+      background: #b3a2ce;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+    }
     footer {
       text-align: center;
-      padding: 1rem;
+      font-size: 0.9rem;
       margin-top: 3rem;
-      font-size: 0.85rem;
+      padding-bottom: 1rem;
       color: #999;
     }
   </style>
@@ -131,126 +122,119 @@
 <body>
   <header>The Noori Styles</header>
   <main>
-
-    <form id="addProductForm">
-      <h2>Add a New Product</h2>
-
-      <label for="name">Product Name</label>
-      <input type="text" id="name" required placeholder="Enter product name" />
-
-      <label for="price">Price</label>
-      <input type="number" id="price" required step="0.01" min="0" placeholder="Enter price" />
-
-      <label for="imageFile">Upload Image</label>
-      <input type="file" id="imageFile" accept="image/*" required />
-
-      <label for="description">Description</label>
-      <textarea id="description" rows="3" required placeholder="Enter description"></textarea>
-
-      <button type="submit">Add Product</button>
-    </form>
-
-    <div class="products" id="products"></div>
-
+    <button id="addSectionBtn">+ Add New Section</button>
+    <div id="sections"></div>
   </main>
   <footer>© 2025 The Noori Styles</footer>
 
   <script>
-    const PRODUCTS_JSON = 'products.json';
-    let addedProducts = [];
+    let categories = JSON.parse(localStorage.getItem('categories') || '[]');
 
-    function loadFromLocalStorage() {
-      addedProducts = JSON.parse(localStorage.getItem('addedProducts') || '[]');
+    function saveCategories() {
+      localStorage.setItem('categories', JSON.stringify(categories));
     }
 
-    function saveToLocalStorage() {
-      localStorage.setItem('addedProducts', JSON.stringify(addedProducts));
+    function createSection(categoryName = "Add a New Product") {
+      const sectionId = Date.now();
+      categories.push({ id: sectionId, name: categoryName, products: [] });
+      saveCategories();
+      renderSections();
     }
 
-    async function loadProducts() {
-      let productsFromFile = [];
-      try {
-        const res = await fetch(PRODUCTS_JSON);
-        productsFromFile = await res.json();
-      } catch (err) {
-        console.warn('Could not load products.json, showing only local products.');
+    function addProduct(categoryId, product) {
+      const cat = categories.find(c => c.id === categoryId);
+      if (cat) {
+        cat.products.push(product);
+        saveCategories();
+        renderSections();
       }
-
-      loadFromLocalStorage();
-
-      const allProducts = [...productsFromFile, ...addedProducts];
-      renderProducts(allProducts);
     }
 
-    function renderProducts(products) {
-      const container = document.getElementById('products');
-      container.innerHTML = '';
-      products.forEach(product => {
-        const div = document.createElement('div');
-        div.className = 'product';
-        div.innerHTML = `
-          <img src="${product.image}" alt="${product.name}" />
-          <h3>${product.name}</h3>
-          <p>${product.description}</p>
-          <div class="price">${product.price}</div>
-        `;
+    function deleteProduct(categoryId, productId) {
+      const cat = categories.find(c => c.id === categoryId);
+      if (cat) {
+        cat.products = cat.products.filter(p => p.id !== productId);
+        saveCategories();
+        renderSections();
+      }
+    }
 
-        // Add delete button if it's a manually added product
-        if (addedProducts.some(p => p.id === product.id)) {
+    function renderSections() {
+      const container = document.getElementById('sections');
+      container.innerHTML = '';
+      categories.forEach(category => {
+        const section = document.createElement('div');
+        section.className = 'section';
+
+        const title = document.createElement('div');
+        title.className = 'section-title';
+        title.contentEditable = true;
+        title.textContent = category.name;
+        title.onblur = () => {
+          category.name = title.textContent.trim() || 'Untitled Section';
+          saveCategories();
+        };
+        section.appendChild(title);
+
+        // Form
+        const form = document.createElement('form');
+        form.innerHTML = `
+          <input type="text" placeholder="Product Name" required />
+          <input type="number" placeholder="Price" required min="0" step="0.01" />
+          <input type="file" accept="image/*" required />
+          <textarea placeholder="Description" required rows="2"></textarea>
+          <button type="submit">Add Product</button>
+        `;
+        form.onsubmit = function(e) {
+          e.preventDefault();
+          const [nameInput, priceInput, fileInput, descInput] = form.querySelectorAll('input, textarea');
+          const reader = new FileReader();
+          reader.onload = () => {
+            const product = {
+              id: Date.now(),
+              name: nameInput.value,
+              price: priceInput.value,
+              image: reader.result,
+              description: descInput.value
+            };
+            addProduct(category.id, product);
+            form.reset();
+          };
+          reader.readAsDataURL(fileInput.files[0]);
+        };
+        section.appendChild(form);
+
+        // Products
+        const productsDiv = document.createElement('div');
+        productsDiv.className = 'products';
+        category.products.forEach(product => {
+          const div = document.createElement('div');
+          div.className = 'product';
+          div.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" />
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <div class="price">${product.price}</div>
+          `;
           const deleteBtn = document.createElement('button');
           deleteBtn.textContent = 'Delete';
           deleteBtn.className = 'delete-btn';
-          deleteBtn.onclick = () => {
-            addedProducts = addedProducts.filter(p => p.id !== product.id);
-            saveToLocalStorage();
-            loadProducts();
-          };
+          deleteBtn.onclick = () => deleteProduct(category.id, product.id);
           div.appendChild(deleteBtn);
-        }
+          productsDiv.appendChild(div);
+        });
 
-        container.appendChild(div);
+        section.appendChild(productsDiv);
+        container.appendChild(section);
       });
     }
 
-    function saveProduct(product) {
-      addedProducts.push(product);
-      saveToLocalStorage();
-    }
-
-    document.getElementById('addProductForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById('name').value.trim();
-      const price = document.getElementById('price').value.trim();
-      const imageInput = document.getElementById('imageFile');
-      const description = document.getElementById('description').value.trim();
-
-      if (!name || !price || !imageInput.files[0] || !description) {
-        alert('Please fill out all fields correctly.');
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = async function () {
-        const base64Image = reader.result;
-
-        const newProduct = {
-          id: Date.now(),
-          name,
-          price,
-          image: base64Image,
-          description
-        };
-
-        saveProduct(newProduct);
-        await loadProducts();
-        e.target.reset();
-      };
-      reader.readAsDataURL(imageInput.files[0]);
-    });
+    document.getElementById('addSectionBtn').onclick = () => {
+      createSection();
+    };
 
     window.onload = () => {
-      loadProducts();
+      renderSections();
     };
   </script>
 </body>
