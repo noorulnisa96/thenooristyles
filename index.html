@@ -6,54 +6,71 @@
   <title>The Noori Styles - Product Categories</title>
   <style>
     :root {
-      --theme-color: #f499c1;
-      --theme-color-dark: #b35c85;
-      --theme-color-light: #fff0f6;
-      --theme-color-alt: #b3a2ce;
+      --primary-color: #f499c1;
+      --primary-color-dark: #b35c85;
+      --primary-color-light: #fff0f6;
+      --primary-color-alt: #b3a2ce;
+      --background-color: white;
+      --text-color: #4b3a57;
     }
     body {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: white;
-      color: #4b3a57;
+      background: var(--background-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
     }
     header {
-      background: var(--theme-color);
+      background: var(--primary-color);
       color: white;
       text-align: center;
       padding: 2rem 1rem;
       font-size: 2rem;
       font-weight: bold;
+      transition: background-color 0.3s;
     }
     #themeChanger {
       max-width: 960px;
       margin: 1rem auto;
       padding: 0 1rem;
       text-align: center;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
     }
-    #themeInput {
-      padding: 0.4rem 0.8rem;
-      font-size: 1rem;
-      border-radius: 6px;
+    #themeChanger label {
+      font-weight: bold;
+      color: var(--text-color);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    #themeChanger div {
+      min-width: 130px;
+    }
+    #themeChanger input[type="color"] {
+      width: 100%;
+      height: 40px;
+      border-radius: 8px;
       border: 1px solid #ccc;
-      width: 120px;
-      text-transform: lowercase;
-      letter-spacing: 1px;
+      cursor: pointer;
     }
     #applyThemeBtn {
-      background: var(--theme-color-alt);
+      background: var(--primary-color-alt);
       color: white;
       border: none;
-      padding: 0.5rem 1rem;
+      padding: 0.7rem 1.5rem;
       border-radius: 10px;
       font-weight: bold;
       cursor: pointer;
-      margin-left: 0.5rem;
       transition: background-color 0.3s ease;
+      align-self: center;
+      height: 40px;
+      margin-top: 1.6rem;
     }
     #applyThemeBtn:hover {
-      background: var(--theme-color-dark);
+      background: var(--primary-color-dark);
     }
     main {
       max-width: 960px;
@@ -62,18 +79,20 @@
     }
     .section {
       margin-bottom: 3rem;
-      border: 2px solid var(--theme-color);
+      border: 2px solid var(--primary-color);
       border-radius: 12px;
-      background: var(--theme-color-light);
+      background: var(--primary-color-light);
       padding: 1rem;
       position: relative;
+      transition: background-color 0.3s, border-color 0.3s;
     }
     .section-title {
       font-size: 1.5rem;
       font-weight: bold;
-      color: var(--theme-color-dark);
+      color: var(--primary-color-dark);
       margin-bottom: 1rem;
-      cursor: pointer;
+      cursor: text;
+      transition: color 0.3s;
     }
     .delete-section-btn {
       position: absolute;
@@ -98,13 +117,14 @@
       }
     }
     .product {
-      background: var(--theme-color-alt);
+      background: var(--primary-color-alt);
       border-radius: 12px;
       padding: 1rem;
       box-shadow: 0 0 10px rgba(179, 162, 206, 0.4);
       color: white;
       text-align: center;
       position: relative;
+      transition: background-color 0.3s;
     }
     .product img {
       max-width: 100%;
@@ -138,9 +158,12 @@
       border-radius: 6px;
       border: 1px solid #ccc;
       font-size: 1rem;
+      color: var(--text-color);
+      background: white;
+      transition: color 0.3s, background-color 0.3s;
     }
     form button {
-      background: var(--theme-color);
+      background: var(--primary-color);
       border: none;
       padding: 0.6rem 1.2rem;
       border-radius: 20px;
@@ -148,20 +171,25 @@
       font-weight: bold;
       cursor: pointer;
       width: 100%;
+      transition: background-color 0.3s;
     }
     form button:hover {
-      background: var(--theme-color-dark);
+      background: var(--primary-color-dark);
     }
     #addSectionBtn {
       display: block;
       margin: 2rem auto;
-      background: var(--theme-color-alt);
+      background: var(--primary-color-alt);
       color: white;
       border: none;
       padding: 0.8rem 1.5rem;
       font-size: 1.1rem;
       border-radius: 10px;
       cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #addSectionBtn:hover {
+      background: var(--primary-color-dark);
     }
     footer {
       text-align: center;
@@ -176,8 +204,19 @@
   <header>The Noori Styles</header>
 
   <div id="themeChanger">
-    <input id="themeInput" type="text" placeholder="#f499c1" maxlength="7" />
-    <button id="applyThemeBtn">Apply Theme Color</button>
+    <div>
+      <label for="primaryColorInput">Primary Color (boxes, buttons)</label>
+      <input id="primaryColorInput" type="color" value="#f499c1" />
+    </div>
+    <div>
+      <label for="backgroundColorInput">Background Color</label>
+      <input id="backgroundColorInput" type="color" value="#ffffff" />
+    </div>
+    <div>
+      <label for="textColorInput">Text Color</label>
+      <input id="textColorInput" type="color" value="#4b3a57" />
+    </div>
+    <button id="applyThemeBtn">Apply Theme</button>
   </div>
 
   <main>
@@ -189,11 +228,21 @@
   <script>
     let categories = JSON.parse(localStorage.getItem('categories') || '[]');
 
-    // Load saved theme color or default
+    // Load saved colors or defaults
     const root = document.documentElement;
-    const savedColor = localStorage.getItem('themeColor') || getComputedStyle(root).getPropertyValue('--theme-color').trim();
-    setThemeColors(savedColor);
-    document.getElementById('themeInput').value = savedColor;
+    const savedPrimary = localStorage.getItem('primaryColor') || '#f499c1';
+    const savedBackground = localStorage.getItem('backgroundColor') || '#ffffff';
+    const savedText = localStorage.getItem('textColor') || '#4b3a57';
+
+    const primaryInput = document.getElementById('primaryColorInput');
+    const backgroundInput = document.getElementById('backgroundColorInput');
+    const textInput = document.getElementById('textColorInput');
+
+    primaryInput.value = savedPrimary;
+    backgroundInput.value = savedBackground;
+    textInput.value = savedText;
+
+    setColors(savedPrimary, savedBackground, savedText);
 
     function saveCategories() {
       localStorage.setItem('categories', JSON.stringify(categories));
@@ -309,21 +358,19 @@
       });
     }
 
-    // Theme color change logic
-    function setThemeColors(hexColor) {
-      if(!/^#([0-9A-F]{3}){1,2}$/i.test(hexColor)) {
-        alert("Invalid hex color code! Use format like #f499c1");
-        return false;
-      }
-      root.style.setProperty('--theme-color', hexColor);
-      // Darker variant for hover etc
-      root.style.setProperty('--theme-color-dark', shadeColor(hexColor, -20));
-      // Lighter variant for backgrounds
-      root.style.setProperty('--theme-color-light', shadeColor(hexColor, 80));
-      // Alternate purple-ish color (used for product bg) just shift hue a bit
-      root.style.setProperty('--theme-color-alt', shadeColor(hexColor, 20));
-      localStorage.setItem('themeColor', hexColor);
-      return true;
+    // Set colors and related variants
+    function setColors(primary, background, text) {
+      root.style.setProperty('--primary-color', primary);
+      root.style.setProperty('--primary-color-dark', shadeColor(primary, -20));
+      root.style.setProperty('--primary-color-light', shadeColor(primary, 80));
+      root.style.setProperty('--primary-color-alt', shadeColor(primary, 20));
+      root.style.setProperty('--background-color', background);
+      root.style.setProperty('--text-color', text);
+
+      // Save to localStorage
+      localStorage.setItem('primaryColor', primary);
+      localStorage.setItem('backgroundColor', background);
+      localStorage.setItem('textColor', text);
     }
 
     // Utility: shade a hex color by % amount (- darker, + lighter)
@@ -348,10 +395,11 @@
     }
 
     document.getElementById('applyThemeBtn').onclick = () => {
-      const val = document.getElementById('themeInput').value.trim();
-      if(setThemeColors(val)) {
-        alert("Theme color updated!");
-      }
+      const primary = primaryInput.value;
+      const background = backgroundInput.value;
+      const text = textInput.value;
+      setColors(primary, background, text);
+      alert("Theme updated!");
     };
 
     document.getElementById('addSectionBtn').onclick = () => {
