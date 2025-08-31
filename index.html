@@ -68,6 +68,22 @@
       margin: 5px 0;
       padding: 8px;
     }
+    .search-bar {
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .load-more {
+      margin: 10px auto;
+      display: block;
+      padding: 8px 16px;
+      background: #65d6ce;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -85,6 +101,7 @@
 <script>
   let categories = JSON.parse(localStorage.getItem("categories")) || [];
   let currentCategory = null;
+  const PAGE_SIZE = 20; // Show 20 products at a time
 
   function saveData() {
     localStorage.setItem("categories", JSON.stringify(categories));
@@ -94,7 +111,7 @@
     let name = document.getElementById("categoryName").value.trim();
     if (!name) return alert("Enter a category name!");
     if (categories.find(c => c.name === name)) return alert("Category already exists!");
-    categories.push({ name, products: [] });
+    categories.push({ name, products: [], page: 1, search: "" });
     saveData();
     renderCategories();
     document.getElementById("categoryName").value = "";
@@ -103,32 +120,46 @@
   function renderCategories() {
     let container = document.getElementById("categories");
     container.innerHTML = "";
-    categories.forEach(cat => {
-      let div = document.createElement("div");
-      div.className = "category";
-      div.innerHTML = `
-        <h2>${cat.name} 
-          <button onclick="showProductForm('${cat.name}')">+ Add Product</button>
-        </h2>
-        <div class="products">
-          ${cat.products.map(p => `
-            <div class="product">
-              ${p.image ? `<img src="${p.image}" alt="">` : ""}
-              ${p.name ? `<h4>${p.name}</h4>` : ""}
-              ${p.price ? `<p>PKR ${p.price}</p>` : ""}
-              ${p.desc ? `<small>${p.desc}</small>` : ""}
-            </div>`).join("")}
-        </div>
-        <div class="form-section" id="form-${cat.name}">
-          <input type="text" id="productName" placeholder="Product Name (optional)">
-          <input type="number" id="productPrice" placeholder="Price in PKR (optional)">
-          <textarea id="productDesc" placeholder="Description (optional)"></textarea>
-          <input type="file" id="productImage">
-          <button onclick="saveProduct()">Save Product</button>
-        </div>
-      `;
-      container.appendChild(div);
-    });
+    categories.forEach(cat => renderCategory(cat));
+  }
+
+  function renderCategory(cat) {
+    let div = document.createElement("div");
+    div.className = "category";
+    let filteredProducts = cat.products.filter(p => 
+      p.name?.toLowerCase().includes(cat.search?.toLowerCase() || "")
+    );
+    let shownProducts = filteredProducts.slice(0, cat.page * PAGE_SIZE);
+
+    div.innerHTML = `
+      <h2>${cat.name} 
+        <button onclick="showProductForm('${cat.name}')">+ Add Product</button>
+      </h2>
+      <div class="search-bar">
+        <input type="text" placeholder="Search products..." 
+          oninput="searchProducts('${cat.name}', this.value)" value="${cat.search || ""}">
+      </div>
+      <div class="products">
+        ${shownProducts.map(p => `
+          <div class="product">
+            ${p.image ? `<img src="${p.image}" alt="">` : ""}
+            ${p.name ? `<h4>${p.name}</h4>` : ""}
+            ${p.price ? `<p>PKR ${p.price}</p>` : ""}
+            ${p.desc ? `<small>${p.desc}</small>` : ""}
+          </div>`).join("")}
+      </div>
+      ${shownProducts.length < filteredProducts.length 
+        ? `<button class="load-more" onclick="loadMore('${cat.name}')">Load More</button>` 
+        : ""}
+      <div class="form-section" id="form-${cat.name}">
+        <input type="text" id="productName" placeholder="Product Name (optional)">
+        <input type="number" id="productPrice" placeholder="Price in PKR (optional)">
+        <textarea id="productDesc" placeholder="Description (optional)"></textarea>
+        <input type="file" id="productImage">
+        <button onclick="saveProduct()">Save Product</button>
+      </div>
+    `;
+    document.getElementById("categories").appendChild(div);
   }
 
   function showProductForm(catName) {
@@ -170,6 +201,20 @@
       categories = [];
       renderCategories();
     }
+  }
+
+  function loadMore(catName) {
+    let cat = categories.find(c => c.name === catName);
+    cat.page++;
+    saveData();
+    renderCategories();
+  }
+
+  function searchProducts(catName, query) {
+    let cat = categories.find(c => c.name === catName);
+    cat.search = query;
+    cat.page = 1; // reset to first page when searching
+    renderCategories();
   }
 
   renderCategories();
