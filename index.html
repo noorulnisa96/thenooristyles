@@ -1,218 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>The Noori Styles - Product Showcase</title>
-<style>
-  body {
-    margin: 0; padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: white;
-    color: #4b3a57;
-  }
-  header {
-    background: #f499c1;
-    color: white;
-    text-align: center;
-    padding: 2rem 1rem;
-    font-size: 2rem;
-    font-weight: bold;
-    box-shadow: 0 4px 8px rgba(244, 153, 193, 0.4);
-  }
-  main {
-    max-width: 960px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-  }
-  .products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-  }
-  .product {
-    background: #b3a2ce;
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 0 15px rgba(179, 162, 206, 0.5);
-    color: white;
-    text-align: center;
-    transition: transform 0.3s ease;
-  }
-  .product:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(244, 153, 193, 0.7);
-  }
-  .product img {
-    max-width: 100%;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-  }
-  .product h3 {
-    margin: 0 0 0.5rem;
-  }
-  .product p {
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
-  }
-  .price {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #f499c1;
-  }
-  form {
-    max-width: 480px;
-    margin: 0 auto 2rem;
-    padding: 1rem;
-    border: 2px solid #f499c1;
-    border-radius: 12px;
-    background: #fff0f6;
-  }
-  form h2 {
-    text-align: center;
-    color: #b35c85;
-  }
-  form label {
-    display: block;
-    margin: 0.5rem 0 0.2rem;
-    color: #6a1b4d;
-    font-weight: 600;
-  }
-  form input, form textarea {
-    width: 100%;
-    padding: 0.4rem;
-    border-radius: 6px;
-    border: 1px solid #b3a2ce;
-    font-size: 1rem;
-  }
-  form textarea {
-    resize: vertical;
-  }
-  form button {
-    margin-top: 1rem;
-    background: #f499c1;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 20px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    font-size: 1.1rem;
-    transition: background 0.3s ease;
-  }
-  form button:hover {
-    background: #b35c85;
-  }
-  footer {
-    text-align: center;
-    padding: 1rem;
-    margin-top: 3rem;
-    font-size: 0.85rem;
-    color: #999;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Noori Styles - Product Showcase</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: white;
+      color: #4b3a57;
+    }
+    header {
+      background: #f499c1;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 2rem;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(244, 153, 193, 0.4);
+    }
+    main {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .product {
+      background: #b3a2ce;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 0 15px rgba(179, 162, 206, 0.5);
+      color: white;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .product:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(244, 153, 193, 0.7);
+    }
+    .product img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    .product h3 {
+      margin: 0 0 0.5rem;
+    }
+    .product p {
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+    .price {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #f499c1;
+    }
+    form {
+      max-width: 480px;
+      margin: 0 auto 2rem;
+      padding: 1rem;
+      border: 2px solid #f499c1;
+      border-radius: 12px;
+      background: #fff0f6;
+    }
+    form h2 {
+      text-align: center;
+      color: #b35c85;
+    }
+    form label {
+      display: block;
+      margin: 0.5rem 0 0.2rem;
+      color: #6a1b4d;
+      font-weight: 600;
+    }
+    form input, form textarea {
+      width: 100%;
+      padding: 0.4rem;
+      border-radius: 6px;
+      border: 1px solid #b3a2ce;
+      font-size: 1rem;
+    }
+    form textarea {
+      resize: vertical;
+    }
+    form button {
+      margin-top: 1rem;
+      background: #f499c1;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 20px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.1rem;
+      transition: background 0.3s ease;
+    }
+    form button:hover {
+      background: #b35c85;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+      font-size: 0.85rem;
+      color: #999;
+    }
+  </style>
 </head>
 <body>
-<header>The Noori Styles</header>
-<main>
+  <header>The Noori Styles</header>
+  <main>
 
-  <form id="addProductForm">
-    <h2>Add a New Product</h2>
-    <label for="name">Product Name</label>
-    <input type="text" id="name" required placeholder="Enter product name" />
+    <!-- Form to manually add products -->
+    <form id="addProductForm">
+      <h2>Add a New Product</h2>
 
-    <label for="price">Price ($)</label>
-    <input type="number" id="price" required step="0.01" min="0" placeholder="Enter price" />
+      <label for="name">Product Name</label>
+      <input type="text" id="name" required placeholder="Enter product name" />
 
-    <label for="image">Image URL</label>
-    <input type="url" id="image" required placeholder="Enter image URL" />
+      <label for="price">Price ($)</label>
+      <input type="number" id="price" required step="0.01" min="0" placeholder="Enter price" />
 
-    <label for="description">Description</label>
-    <textarea id="description" rows="3" required placeholder="Enter description"></textarea>
+      <label for="imageFile">Upload Image</label>
+      <input type="file" id="imageFile" accept="image/*" required />
 
-    <button type="submit">Add Product</button>
-  </form>
+      <label for="description">Description</label>
+      <textarea id="description" rows="3" required placeholder="Enter description"></textarea>
 
-  <div class="products" id="products"></div>
-</main>
-<footer>© 2025 The Noori Styles</footer>
+      <button type="submit">Add Product</button>
+    </form>
 
-<script>
-const PRODUCTS_JSON = 'products.json';
+    <!-- Products display -->
+    <div class="products" id="products"></div>
 
-// Load products.json and merge with locally added products from localStorage
-async function loadProducts() {
-  const res = await fetch(PRODUCTS_JSON);
-  const productsFromFile = await res.json();
+  </main>
+  <footer>© 2025 The Noori Styles</footer>
 
-  // Load from localStorage (saved products)
-  const savedProducts = JSON.parse(localStorage.getItem('addedProducts') || '[]');
+  <script>
+    const PRODUCTS_JSON = 'products.json';
 
-  // Combine both lists (savedProducts can have duplicates if you want, but IDs should be unique ideally)
-  const allProducts = [...productsFromFile, ...savedProducts];
+    async function loadProducts() {
+      let productsFromFile = [];
+      try {
+        const res = await fetch(PRODUCTS_JSON);
+        productsFromFile = await res.json();
+      } catch (err) {
+        console.warn('Could not load products.json, showing only local products.');
+      }
 
-  renderProducts(allProducts);
-  return allProducts;
-}
+      const savedProducts = JSON.parse(localStorage.getItem('addedProducts') || '[]');
+      const allProducts = [...productsFromFile, ...savedProducts];
 
-function renderProducts(products) {
-  const container = document.getElementById('products');
-  container.innerHTML = '';
-  products.forEach(product => {
-    const div = document.createElement('div');
-    div.className = 'product';
-    div.innerHTML = `
-      <img src="${product.image}" alt="${product.name}" />
-      <h3>${product.name}</h3>
-      <p>${product.description}</p>
-      <div class="price">$${parseFloat(product.price).toFixed(2)}</div>
-    `;
-    container.appendChild(div);
-  });
-}
+      renderProducts(allProducts);
+      return allProducts;
+    }
 
-function saveProduct(product) {
-  const saved = JSON.parse(localStorage.getItem('addedProducts') || '[]');
-  saved.push(product);
-  localStorage.setItem('addedProducts', JSON.stringify(saved));
-}
+    function renderProducts(products) {
+      const container = document.getElementById('products');
+      container.innerHTML = '';
+      products.forEach(product => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <div class="price">$${parseFloat(product.price).toFixed(2)}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
 
-document.getElementById('addProductForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+    function saveProduct(product) {
+      const saved = JSON.parse(localStorage.getItem('addedProducts') || '[]');
+      saved.push(product);
+      localStorage.setItem('addedProducts', JSON.stringify(saved));
+    }
 
-  const name = document.getElementById('name').value.trim();
-  const price = parseFloat(document.getElementById('price').value);
-  const image = document.getElementById('image').value.trim();
-  const description = document.getElementById('description').value.trim();
+    document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-  if (!name || !price || !image || !description) {
-    alert('Please fill out all fields correctly.');
-    return;
-  }
+      const name = document.getElementById('name').value.trim();
+      const price = parseFloat(document.getElementById('price').value);
+      const imageInput = document.getElementById('imageFile');
+      const description = document.getElementById('description').value.trim();
 
-  const newProduct = {
-    id: Date.now(), // unique ID based on timestamp
-    name,
-    price,
-    image,
-    description
-  };
+      if (!name || !price || !imageInput.files[0] || !description) {
+        alert('Please fill out all fields correctly.');
+        return;
+      }
 
-  // Save to localStorage
-  saveProduct(newProduct);
+      const reader = new FileReader();
+      reader.onload = async function () {
+        const base64Image = reader.result;
 
-  // Reload products including the new one
-  const allProducts = await loadProducts();
+        const newProduct = {
+          id: Date.now(),
+          name,
+          price,
+          image: base64Image,
+          description
+        };
 
-  // Clear form
-  e.target.reset();
-});
+        saveProduct(newProduct);
+        await loadProducts();
+        e.target.reset();
+      };
+      reader.readAsDataURL(imageInput.files[0]);
+    });
 
-window.onload = () => {
-  loadProducts();
-};
-</script>
+    window.onload = () => {
+      loadProducts();
+    };
+  </script>
 </body>
 </html>
