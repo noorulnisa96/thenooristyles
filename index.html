@@ -19,7 +19,6 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: var(--background-color);
       color: var(--text-color);
-      transition: background-color 0.3s, color 0.3s;
     }
     header {
       background: var(--primary-color);
@@ -33,7 +32,6 @@
       max-width: 960px;
       margin: 1rem auto;
       padding: 0 1rem;
-      text-align: center;
       display: flex;
       gap: 1rem;
       justify-content: center;
@@ -41,7 +39,6 @@
     }
     #themeChanger label {
       font-weight: bold;
-      color: var(--text-color);
       display: block;
       margin-bottom: 0.3rem;
     }
@@ -131,9 +128,11 @@
       font-weight: bold;
       margin-top: 0.3rem;
     }
-    .delete-btn, .edit-btn {
+    .delete-btn {
       position: absolute;
       top: 10px;
+      right: 10px;
+      background: #ff4d6d;
       border: none;
       color: white;
       padding: 4px 8px;
@@ -141,8 +140,6 @@
       cursor: pointer;
       font-size: 0.8rem;
     }
-    .delete-btn { right: 10px; background: #ff4d6d; }
-    .edit-btn { right: 70px; background: #ffa500; }
     form {
       margin: 1rem 0;
     }
@@ -287,7 +284,7 @@
           <input type="text" name="pname" placeholder="Product Name" required />
           <input type="number" name="pprice" placeholder="Price (PKR)" required min="0" />
           <input type="file" name="pimage" accept="image/*" required />
-          <textarea name="pdesc" placeholder="Description" required rows="2"></textarea>
+          <textarea name="pdesc" placeholder="Description (optional)" rows="2"></textarea>
           <button type="submit">Add Product</button>
         `;
         form.onsubmit = e => {
@@ -305,7 +302,7 @@
               id: Date.now(),
               name: nameInput.value,
               price: priceInput.value,
-              description: descInput.value,
+              description: descInput.value || "",
               image: reader.result
             };
             addProduct(category.id, product);
@@ -324,7 +321,7 @@
           div.innerHTML = `
             <img src="${product.image}" alt="${product.name}" />
             <h3>${product.name}</h3>
-            <p>${product.description}</p>
+            ${product.description ? `<p>${product.description}</p>` : ""}
             <div class="price">PKR ${product.price}</div>
           `;
 
@@ -333,47 +330,7 @@
           del.className = "delete-btn";
           del.onclick = () => deleteProduct(category.id, product.id);
 
-          const edit = document.createElement('button');
-          edit.textContent = "Edit";
-          edit.className = "edit-btn";
-          edit.onclick = () => {
-            div.innerHTML = `
-              <form class="edit-form">
-                <input type="text" value="${product.name}" required />
-                <input type="number" value="${product.price}" required min="0" />
-                <input type="file" accept="image/*" />
-                <textarea required rows="2">${product.description}</textarea>
-                <button type="submit">Save</button>
-                <button type="button" class="cancel-btn">Cancel</button>
-              </form>
-            `;
-            const editForm = div.querySelector('.edit-form');
-            editForm.querySelector('.cancel-btn').onclick = () => renderSections();
-
-            editForm.onsubmit = ev => {
-              ev.preventDefault();
-              const [nameInput, priceInput, fileInput, descInput] = editForm.querySelectorAll('input, textarea');
-              product.name = nameInput.value;
-              product.price = priceInput.value;
-              product.description = descInput.value;
-
-              if (fileInput.files.length > 0) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                  product.image = reader.result;
-                  saveCategories();
-                  renderSections();
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-              } else {
-                saveCategories();
-                renderSections();
-              }
-            };
-          };
-
           div.appendChild(del);
-          div.appendChild(edit);
           productsDiv.appendChild(div);
         });
 
