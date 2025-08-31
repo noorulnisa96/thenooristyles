@@ -5,193 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Product Website</title>
   <style>
-    :root {
-      --primary: #ff6f61;
-      --secondary: #333;
-      --background: #f9f9f9;
-      --gradient: linear-gradient(135deg, #ff6f61, #ff9966);
-    }
-
-    body {
-      font-family: "Poppins", sans-serif;
-      margin: 0;
-      padding: 0;
-      background: var(--background);
-      color: var(--secondary);
-    }
-
-    header {
-      background: var(--gradient);
-      color: #fff;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .controls {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .controls select,
-    .controls button {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    .controls select {
-      background: #fff;
-      border: 1px solid #ccc;
-    }
-
-    .controls button {
-      background: var(--secondary);
-      color: #fff;
-    }
-
-    .form-section {
-      margin: 1rem auto;
-      padding: 1rem;
-      background: #fff;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-section input,
-    .form-section textarea {
-      width: 100%;
-      margin: 0.5rem 0;
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-
-    .form-section button {
-      background: var(--primary);
-      color: #fff;
-      padding: 0.6rem;
-      width: 100%;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .category {
-      margin: 2rem auto;
-      padding: 1rem;
-      width: 95%;
-      max-width: 1200px;
-    }
-
-    .category h2 {
-      background: var(--gradient);
-      padding: 0.5rem;
-      border-radius: 6px;
-      color: #fff;
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .product {
-      background: #fff;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    .product img {
-      max-width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-
-    .product h3 {
-      margin: 0.5rem 0;
-    }
-
-    .reset-btn {
-      margin: 2rem auto;
-      display: block;
-      background: red;
-      color: #fff;
-      padding: 0.8rem 1.2rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    /* 🎨 Color Settings Panel */
-    .color-settings {
-      margin: 1rem auto;
-      padding: 1rem;
-      background: #fff;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .color-settings h3 {
-      margin-bottom: 0.5rem;
-      color: var(--secondary);
-    }
-
-    .color-settings label {
-      display: block;
-      margin: 0.5rem 0 0.2rem;
-    }
-
-    .color-settings input {
-      width: 100%;
-      padding: 0.3rem;
-    }
+    body {font-family:"Poppins",sans-serif;margin:0;padding:0;background:#f9f9f9;color:#333;}
+    header {background:linear-gradient(45deg,#ff6f61,#ff9966);color:#fff;padding:1rem;text-align:center;font-size:1.5rem;font-weight:bold;}
+    .controls {display:flex;gap:1rem;justify-content:center;margin:1rem;flex-wrap:wrap;}
+    .controls button {padding:0.5rem 1rem;border:none;border-radius:6px;font-size:1rem;cursor:pointer;background:#333;color:#fff;}
+    .form-section {margin:1rem auto;padding:1rem;background:#fff;border-radius:10px;width:90%;max-width:500px;box-shadow:0 3px 8px rgba(0,0,0,0.1);}
+    .form-section input,.form-section textarea {width:100%;margin:0.5rem 0;padding:0.6rem;border:1px solid #ccc;border-radius:6px;font-size:1rem;}
+    .form-section button {background:linear-gradient(45deg,#ff6f61,#ff9966);color:#fff;padding:0.6rem;width:100%;border:none;border-radius:6px;cursor:pointer;font-size:1rem;}
+    .category {margin:2rem auto;padding:1rem;width:95%;max-width:1200px;background:#fff;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+    .category h2 {padding:0.5rem 1rem;color:#fff;background:linear-gradient(45deg,#ff6f61,#ff9966);border-radius:8px;display:flex;justify-content:space-between;align-items:center;}
+    .category h2 button {font-size:0.9rem;padding:0.3rem 0.8rem;background:#333;color:#fff;border:none;border-radius:6px;cursor:pointer;}
+    .products {display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem;}
+    .product {background:#fafafa;padding:1rem;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1);text-align:center;}
+    .product img {max-width:100%;height:150px;object-fit:cover;border-radius:8px;}
+    .product h3 {margin:0.5rem 0;}
+    .reset-btn {margin:2rem auto;display:block;background:red;color:#fff;padding:0.8rem 1.2rem;border:none;border-radius:6px;cursor:pointer;font-size:1rem;}
+    .theme-controls {text-align:center;margin:1rem;}
   </style>
 </head>
 <body>
-  <header>My Product Website</header>
+  <header id="mainHeader">My Product Website</header>
+
+  <!-- Gradient controls -->
+  <div class="theme-controls">
+    <label>Choose Gradient: </label>
+    <input type="color" id="color1" value="#ff6f61">
+    <input type="color" id="color2" value="#ff9966">
+    <button onclick="applyGradient()">Apply</button>
+  </div>
 
   <div class="controls">
-    <select id="categorySelect"></select>
-    <button onclick="showForm()">Add Product</button>
     <button onclick="addCategory()">Add Category</button>
   </div>
 
-  <!-- 🎨 Color Settings -->
-  <div class="color-settings">
-    <h3>Theme Settings</h3>
-    <label>Primary Color</label>
-    <input type="color" id="primaryColor" value="#ff6f61">
-    <label>Secondary Color</label>
-    <input type="color" id="secondaryColor" value="#333333">
-    <label>Background Color</label>
-    <input type="color" id="backgroundColor" value="#f9f9f9">
-    <label>Gradient (Start)</label>
-    <input type="color" id="gradientStart" value="#ff6f61">
-    <label>Gradient (End)</label>
-    <input type="color" id="gradientEnd" value="#ff9966">
-    <button onclick="applyColors()">Apply Colors</button>
-  </div>
-
   <div id="formContainer" class="form-section" style="display:none;">
+    <h3 id="formTitle">Add Product</h3>
     <input type="text" id="productName" placeholder="Product Name" required>
     <input type="number" id="productPrice" placeholder="Price (PKR)" required>
     <textarea id="productDesc" placeholder="Description (Optional)"></textarea>
@@ -204,16 +52,8 @@
 
   <script>
     let categories = JSON.parse(localStorage.getItem("categories")) || [];
-    let theme = JSON.parse(localStorage.getItem("theme")) || {
-      primary: "#ff6f61",
-      secondary: "#333333",
-      background: "#f9f9f9",
-      gradientStart: "#ff6f61",
-      gradientEnd: "#ff9966"
-    };
-
+    let currentCategory = null;
     renderCategories();
-    applyTheme(theme);
 
     function addCategory() {
       let name = prompt("Enter category name:");
@@ -224,25 +64,22 @@
       }
     }
 
-    function showForm() {
-      if (categories.length === 0) {
-        alert("Please add a category first!");
-        return;
-      }
+    function showForm(categoryName) {
+      currentCategory = categoryName;
       document.getElementById("formContainer").style.display = "block";
+      document.getElementById("formTitle").innerText = `Add Product to ${categoryName}`;
     }
 
     function saveProduct() {
+      if (!currentCategory) {
+        alert("Please choose a category first.");
+        return;
+      }
       let name = document.getElementById("productName").value.trim();
       let price = document.getElementById("productPrice").value.trim();
       let desc = document.getElementById("productDesc").value.trim();
       let imageInput = document.getElementById("productImage");
-      let category = document.getElementById("categorySelect").value;
 
-      if (!category) {
-        alert("Please select a category.");
-        return;
-      }
       if (!name || !price) {
         alert("Name and Price are required!");
         return;
@@ -251,9 +88,8 @@
       let reader = new FileReader();
       reader.onload = function(e) {
         let imgData = e.target.result;
-        categories.find(c => c.name === category).products.push({
-          name, price, desc, image: imgData
-        });
+        let cat = categories.find(c => c.name === currentCategory);
+        cat.products.push({ name, price, desc, image: imgData });
         saveData();
         renderCategories();
         clearForm();
@@ -261,9 +97,8 @@
       if (imageInput.files[0]) {
         reader.readAsDataURL(imageInput.files[0]);
       } else {
-        categories.find(c => c.name === category).products.push({
-          name, price, desc, image: ""
-        });
+        let cat = categories.find(c => c.name === currentCategory);
+        cat.products.push({ name, price, desc, image: "" });
         saveData();
         renderCategories();
         clearForm();
@@ -280,14 +115,17 @@
 
     function renderCategories() {
       let container = document.getElementById("categoriesContainer");
-      let select = document.getElementById("categorySelect");
       container.innerHTML = "";
-      select.innerHTML = "";
-
       categories.forEach(cat => {
         let section = document.createElement("div");
         section.className = "category";
-        section.innerHTML = `<h2>${cat.name}</h2><div class="products"></div>`;
+        section.innerHTML = `
+          <h2 class="banner">
+            ${cat.name}
+            <button onclick="showForm('${cat.name}')">+ Add Product</button>
+          </h2>
+          <div class="products"></div>
+        `;
         let productsContainer = section.querySelector(".products");
         cat.products.forEach(p => {
           let div = document.createElement("div");
@@ -301,11 +139,6 @@
           productsContainer.appendChild(div);
         });
         container.appendChild(section);
-
-        let option = document.createElement("option");
-        option.value = cat.name;
-        option.textContent = cat.name;
-        select.appendChild(option);
       });
     }
 
@@ -316,45 +149,29 @@
     function resetWebsite() {
       if (confirm("Are you sure? This will remove all categories and products.")) {
         localStorage.removeItem("categories");
-        localStorage.removeItem("theme");
         categories = [];
-        theme = {
-          primary: "#ff6f61",
-          secondary: "#333333",
-          background: "#f9f9f9",
-          gradientStart: "#ff6f61",
-          gradientEnd: "#ff9966"
-        };
-        applyTheme(theme);
         renderCategories();
       }
     }
 
-    // 🎨 Theme Functions
-    function applyColors() {
-      theme = {
-        primary: document.getElementById("primaryColor").value,
-        secondary: document.getElementById("secondaryColor").value,
-        background: document.getElementById("backgroundColor").value,
-        gradientStart: document.getElementById("gradientStart").value,
-        gradientEnd: document.getElementById("gradientEnd").value
-      };
-      applyTheme(theme);
-      localStorage.setItem("theme", JSON.stringify(theme));
-    }
+    // 🎨 Apply gradient to all banners
+    function applyGradient() {
+      let c1 = document.getElementById("color1").value;
+      let c2 = document.getElementById("color2").value;
+      let gradient = `linear-gradient(45deg, ${c1}, ${c2})`;
 
-    function applyTheme(t) {
-      document.documentElement.style.setProperty("--primary", t.primary);
-      document.documentElement.style.setProperty("--secondary", t.secondary);
-      document.documentElement.style.setProperty("--background", t.background);
-      document.documentElement.style.setProperty("--gradient", `linear-gradient(135deg, ${t.gradientStart}, ${t.gradientEnd})`);
+      // header
+      document.getElementById("mainHeader").style.background = gradient;
 
-      // update color pickers
-      document.getElementById("primaryColor").value = t.primary;
-      document.getElementById("secondaryColor").value = t.secondary;
-      document.getElementById("backgroundColor").value = t.background;
-      document.getElementById("gradientStart").value = t.gradientStart;
-      document.getElementById("gradientEnd").value = t.gradientEnd;
+      // form save button
+      document.querySelectorAll(".form-section button").forEach(btn => {
+        btn.style.background = gradient;
+      });
+
+      // category banners
+      document.querySelectorAll(".category h2").forEach(banner => {
+        banner.style.background = gradient;
+      });
     }
   </script>
 </body>
