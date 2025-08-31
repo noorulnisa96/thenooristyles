@@ -40,6 +40,7 @@
       color: white;
       text-align: center;
       transition: transform 0.3s ease;
+      position: relative;
     }
     .product:hover {
       transform: scale(1.05);
@@ -61,6 +62,18 @@
       font-weight: bold;
       font-size: 1.1rem;
       color: white;
+    }
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff4d6d;
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
     }
     form {
       max-width: 480px;
@@ -119,7 +132,6 @@
   <header>The Noori Styles</header>
   <main>
 
-    <!-- Form to manually add products -->
     <form id="addProductForm">
       <h2>Add a New Product</h2>
 
@@ -138,7 +150,6 @@
       <button type="submit">Add Product</button>
     </form>
 
-    <!-- Products display -->
     <div class="products" id="products"></div>
 
   </main>
@@ -146,6 +157,15 @@
 
   <script>
     const PRODUCTS_JSON = 'products.json';
+    let addedProducts = [];
+
+    function loadFromLocalStorage() {
+      addedProducts = JSON.parse(localStorage.getItem('addedProducts') || '[]');
+    }
+
+    function saveToLocalStorage() {
+      localStorage.setItem('addedProducts', JSON.stringify(addedProducts));
+    }
 
     async function loadProducts() {
       let productsFromFile = [];
@@ -156,11 +176,10 @@
         console.warn('Could not load products.json, showing only local products.');
       }
 
-      const savedProducts = JSON.parse(localStorage.getItem('addedProducts') || '[]');
-      const allProducts = [...productsFromFile, ...savedProducts];
+      loadFromLocalStorage();
 
+      const allProducts = [...productsFromFile, ...addedProducts];
       renderProducts(allProducts);
-      return allProducts;
     }
 
     function renderProducts(products) {
@@ -175,14 +194,27 @@
           <p>${product.description}</p>
           <div class="price">${product.price}</div>
         `;
+
+        // Add delete button if it's a manually added product
+        if (addedProducts.some(p => p.id === product.id)) {
+          const deleteBtn = document.createElement('button');
+          deleteBtn.textContent = 'Delete';
+          deleteBtn.className = 'delete-btn';
+          deleteBtn.onclick = () => {
+            addedProducts = addedProducts.filter(p => p.id !== product.id);
+            saveToLocalStorage();
+            loadProducts();
+          };
+          div.appendChild(deleteBtn);
+        }
+
         container.appendChild(div);
       });
     }
 
     function saveProduct(product) {
-      const saved = JSON.parse(localStorage.getItem('addedProducts') || '[]');
-      saved.push(product);
-      localStorage.setItem('addedProducts', JSON.stringify(saved));
+      addedProducts.push(product);
+      saveToLocalStorage();
     }
 
     document.getElementById('addProductForm').addEventListener('submit', async (e) => {
