@@ -100,8 +100,7 @@
 
 <script>
   let categories = JSON.parse(localStorage.getItem("categories")) || [];
-  let currentCategory = null;
-  const PAGE_SIZE = 20; // Show 20 products at a time
+  const PAGE_SIZE = 20;
 
   function saveData() {
     localStorage.setItem("categories", JSON.stringify(categories));
@@ -133,7 +132,7 @@
 
     div.innerHTML = `
       <h2>${cat.name} 
-        <button onclick="showProductForm('${cat.name}')">+ Add Product</button>
+        <button onclick="toggleProductForm('${cat.name}')">+ Add Product</button>
       </h2>
       <div class="search-bar">
         <input type="text" placeholder="Search products..." 
@@ -152,33 +151,28 @@
         ? `<button class="load-more" onclick="loadMore('${cat.name}')">Load More</button>` 
         : ""}
       <div class="form-section" id="form-${cat.name}">
-        <input type="text" id="productName" placeholder="Product Name (optional)">
-        <input type="number" id="productPrice" placeholder="Price in PKR (optional)">
-        <textarea id="productDesc" placeholder="Description (optional)"></textarea>
-        <input type="file" id="productImage">
-        <button onclick="saveProduct()">Save Product</button>
+        <input type="text" id="name-${cat.name}" placeholder="Product Name (optional)">
+        <input type="number" id="price-${cat.name}" placeholder="Price in PKR (optional)">
+        <textarea id="desc-${cat.name}" placeholder="Description (optional)"></textarea>
+        <input type="file" id="image-${cat.name}">
+        <button onclick="saveProduct('${cat.name}')">Save Product</button>
       </div>
     `;
     document.getElementById("categories").appendChild(div);
   }
 
-  function showProductForm(catName) {
-    currentCategory = catName;
+  function toggleProductForm(catName) {
     document.querySelectorAll(".form-section").forEach(f => f.style.display = "none");
     document.getElementById("form-" + catName).style.display = "block";
   }
 
-  function saveProduct() {
-    if (!currentCategory) {
-      alert("Select a category first!");
-      return;
-    }
-    let name = document.getElementById("productName").value.trim();
-    let price = document.getElementById("productPrice").value.trim();
-    let desc = document.getElementById("productDesc").value.trim();
-    let imageInput = document.getElementById("productImage");
+  function saveProduct(catName) {
+    let name = document.getElementById("name-" + catName).value.trim();
+    let price = document.getElementById("price-" + catName).value.trim();
+    let desc = document.getElementById("desc-" + catName).value.trim();
+    let imageInput = document.getElementById("image-" + catName);
 
-    let cat = categories.find(c => c.name === currentCategory);
+    let cat = categories.find(c => c.name === catName);
 
     if (imageInput.files && imageInput.files[0]) {
       let reader = new FileReader();
@@ -213,7 +207,7 @@
   function searchProducts(catName, query) {
     let cat = categories.find(c => c.name === catName);
     cat.search = query;
-    cat.page = 1; // reset to first page when searching
+    cat.page = 1;
     renderCategories();
   }
 
