@@ -6,14 +6,18 @@
   <title>My Product Website</title>
   <style>
     body {font-family:"Poppins",sans-serif;margin:0;padding:0;background:#f9f9f9;color:#333;}
-    header {background:#ff6f61;color:#fff;padding:1rem;text-align:center;font-size:1.5rem;font-weight:bold;}
+    header {
+      background: linear-gradient(45deg, #ff6f61, #ff9966);
+      color:#fff;padding:1rem;text-align:center;
+      font-size:1.5rem;font-weight:bold;
+    }
     .controls {display:flex;gap:1rem;justify-content:center;margin:1rem;flex-wrap:wrap;}
     .controls select,.controls button {padding:0.5rem 1rem;border:none;border-radius:6px;font-size:1rem;cursor:pointer;}
     .controls select {background:#fff;border:1px solid #ccc;}
     .controls button {background:#333;color:#fff;}
     .form-section {margin:1rem auto;padding:1rem;background:#fff;border-radius:10px;width:90%;max-width:500px;box-shadow:0 3px 8px rgba(0,0,0,0.1);}
     .form-section input,.form-section textarea {width:100%;margin:0.5rem 0;padding:0.6rem;border:1px solid #ccc;border-radius:6px;font-size:1rem;}
-    .form-section button {background:#ff6f61;color:#fff;padding:0.6rem;width:100%;border:none;border-radius:6px;cursor:pointer;font-size:1rem;}
+    .form-section button {background:linear-gradient(45deg,#ff6f61,#ff9966);color:#fff;padding:0.6rem;width:100%;border:none;border-radius:6px;cursor:pointer;font-size:1rem;}
     .category {margin:2rem auto;padding:1rem;width:95%;max-width:1200px;}
     .category h2 {border-bottom:2px solid #ff6f61;padding-bottom:0.5rem;color:#ff6f61;}
     .products {display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem;}
@@ -21,10 +25,19 @@
     .product img {max-width:100%;height:150px;object-fit:cover;border-radius:8px;}
     .product h3 {margin:0.5rem 0;}
     .reset-btn {margin:2rem auto;display:block;background:red;color:#fff;padding:0.8rem 1.2rem;border:none;border-radius:6px;cursor:pointer;font-size:1rem;}
+    .theme-controls {text-align:center;margin:1rem;}
   </style>
 </head>
 <body>
-  <header>My Product Website</header>
+  <header id="mainHeader">My Product Website</header>
+
+  <!-- Gradient color controls -->
+  <div class="theme-controls">
+    <label>Choose Gradient: </label>
+    <input type="color" id="color1" value="#ff6f61">
+    <input type="color" id="color2" value="#ff9966">
+    <button onclick="applyGradient()">Apply</button>
+  </div>
 
   <div class="controls">
     <select id="categorySelect"></select>
@@ -151,6 +164,17 @@
         categories = [];
         renderCategories();
       }
+    }
+
+    // 🎨 Apply Gradient Function
+    function applyGradient() {
+      let c1 = document.getElementById("color1").value;
+      let c2 = document.getElementById("color2").value;
+      let gradient = `linear-gradient(45deg, ${c1}, ${c2})`;
+      document.getElementById("mainHeader").style.background = gradient;
+      document.querySelectorAll(".form-section button").forEach(btn => {
+        btn.style.background = gradient;
+      });
     }
   </script>
 </body>
