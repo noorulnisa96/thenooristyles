@@ -1,178 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Product Website</title>
+  <meta charset="UTF-8">
+  <title>The Noori Styles - Inventory</title>
   <style>
-    body {font-family:"Poppins",sans-serif;margin:0;padding:0;background:#f9f9f9;color:#333;}
-    header {background:linear-gradient(45deg,#ff6f61,#ff9966);color:#fff;padding:1rem;text-align:center;font-size:1.5rem;font-weight:bold;}
-    .controls {display:flex;gap:1rem;justify-content:center;margin:1rem;flex-wrap:wrap;}
-    .controls button {padding:0.5rem 1rem;border:none;border-radius:6px;font-size:1rem;cursor:pointer;background:#333;color:#fff;}
-    .form-section {margin:1rem auto;padding:1rem;background:#fff;border-radius:10px;width:90%;max-width:500px;box-shadow:0 3px 8px rgba(0,0,0,0.1);}
-    .form-section input,.form-section textarea {width:100%;margin:0.5rem 0;padding:0.6rem;border:1px solid #ccc;border-radius:6px;font-size:1rem;}
-    .form-section button {background:linear-gradient(45deg,#ff6f61,#ff9966);color:#fff;padding:0.6rem;width:100%;border:none;border-radius:6px;cursor:pointer;font-size:1rem;}
-    .category {margin:2rem auto;padding:1rem;width:95%;max-width:1200px;background:#fff;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
-    .category h2 {padding:0.5rem 1rem;color:#fff;background:linear-gradient(45deg,#ff6f61,#ff9966);border-radius:8px;display:flex;justify-content:space-between;align-items:center;}
-    .category h2 button {font-size:0.9rem;padding:0.3rem 0.8rem;background:#333;color:#fff;border:none;border-radius:6px;cursor:pointer;}
-    .products {display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem;}
-    .product {background:#fafafa;padding:1rem;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1);text-align:center;}
-    .product img {max-width:100%;height:150px;object-fit:cover;border-radius:8px;}
-    .product h3 {margin:0.5rem 0;}
-    .reset-btn {margin:2rem auto;display:block;background:red;color:#fff;padding:0.8rem 1.2rem;border:none;border-radius:6px;cursor:pointer;font-size:1rem;}
-    .theme-controls {text-align:center;margin:1rem;}
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: var(--bg-color, #f9f9f9);
+      color: var(--primary-color, #333);
+    }
+    header {
+      padding: 20px;
+      text-align: center;
+      background: var(--gradient, linear-gradient(45deg, #ff7eb3, #65d6ce));
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    #controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      padding: 15px;
+      background: var(--secondary-color, #eee);
+    }
+    #controls input, #controls button {
+      padding: 8px;
+      font-size: 14px;
+    }
+    .category {
+      margin: 20px;
+      padding: 15px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .category h2 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .product {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 8px;
+      background: #fafafa;
+      text-align: center;
+    }
+    .product img {
+      max-width: 100%; height: 100px; object-fit: cover;
+      border-radius: 5px;
+    }
+    .form-section {
+      display: none;
+      margin-top: 10px;
+    }
+    .form-section input, .form-section textarea, .form-section button {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      padding: 8px;
+    }
+    #themeControls {
+      margin: 20px;
+      padding: 15px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
-  <header id="mainHeader">My Product Website</header>
 
-  <!-- Gradient controls -->
-  <div class="theme-controls">
-    <label>Choose Gradient: </label>
-    <input type="color" id="color1" value="#ff6f61">
-    <input type="color" id="color2" value="#ff9966">
-    <button onclick="applyGradient()">Apply</button>
-  </div>
+<header>The Noori Styles - Inventory</header>
 
-  <div class="controls">
-    <button onclick="addCategory()">Add Category</button>
-  </div>
+<div id="controls">
+  <input type="text" id="categoryName" placeholder="New Category Name">
+  <button onclick="addCategory()">+ Add Category</button>
+  <button onclick="resetWebsite()">Reset Website</button>
+</div>
 
-  <div id="formContainer" class="form-section" style="display:none;">
-    <h3 id="formTitle">Add Product</h3>
-    <input type="text" id="productName" placeholder="Product Name" required>
-    <input type="number" id="productPrice" placeholder="Price (PKR)" required>
-    <textarea id="productDesc" placeholder="Description (Optional)"></textarea>
-    <input type="file" id="productImage" accept="image/*">
-    <button onclick="saveProduct()">Save Product</button>
-  </div>
+<div id="themeControls">
+  <h3>🎨 Theme Settings</h3>
+  <label>Primary Color: <input type="color" id="primaryColor" onchange="setTheme()"></label>
+  <label>Secondary Color: <input type="color" id="secondaryColor" onchange="setTheme()"></label>
+  <label>Background Color: <input type="color" id="bgColor" onchange="setTheme()"></label>
+  <label>Gradient Banner: 
+    <input type="color" id="grad1" onchange="setTheme()">
+    <input type="color" id="grad2" onchange="setTheme()">
+  </label>
+</div>
 
-  <div id="categoriesContainer"></div>
-  <button class="reset-btn" onclick="resetWebsite()">Reset Website</button>
+<div id="categories"></div>
 
-  <script>
-    let categories = JSON.parse(localStorage.getItem("categories")) || [];
-    let currentCategory = null;
+<script>
+  let categories = JSON.parse(localStorage.getItem("categories")) || [];
+  let currentCategory = null;
+
+  function saveData() {
+    localStorage.setItem("categories", JSON.stringify(categories));
+  }
+
+  function addCategory() {
+    let name = document.getElementById("categoryName").value.trim();
+    if (!name) return alert("Enter a category name!");
+    if (categories.find(c => c.name === name)) return alert("Category already exists!");
+    categories.push({ name, products: [] });
+    saveData();
     renderCategories();
+    document.getElementById("categoryName").value = "";
+  }
 
-    function addCategory() {
-      let name = prompt("Enter category name:");
-      if (name && !categories.find(c => c.name === name)) {
-        categories.push({ name, products: [] });
-        saveData();
-        renderCategories();
-      }
+  function renderCategories() {
+    let container = document.getElementById("categories");
+    container.innerHTML = "";
+    categories.forEach(cat => {
+      let div = document.createElement("div");
+      div.className = "category";
+      div.innerHTML = `
+        <h2>${cat.name} 
+          <button onclick="showProductForm('${cat.name}')">+ Add Product</button>
+        </h2>
+        <div class="products">
+          ${cat.products.map(p => `
+            <div class="product">
+              ${p.image ? `<img src="${p.image}" alt="">` : ""}
+              <h4>${p.name}</h4>
+              <p>PKR ${p.price}</p>
+              ${p.desc ? `<small>${p.desc}</small>` : ""}
+            </div>`).join("")}
+        </div>
+        <div class="form-section" id="form-${cat.name}">
+          <input type="text" id="productName" placeholder="Product Name">
+          <input type="number" id="productPrice" placeholder="Price in PKR">
+          <textarea id="productDesc" placeholder="Description (optional)"></textarea>
+          <input type="file" id="productImage">
+          <button onclick="saveProduct()">Save Product</button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function showProductForm(catName) {
+    currentCategory = catName;
+    document.querySelectorAll(".form-section").forEach(f => f.style.display = "none");
+    document.getElementById("form-" + catName).style.display = "block";
+  }
+
+  function saveProduct() {
+    if (!currentCategory) {
+      alert("Select a category first!");
+      return;
+    }
+    let name = document.getElementById("productName").value.trim();
+    let price = document.getElementById("productPrice").value.trim();
+    let desc = document.getElementById("productDesc").value.trim();
+    let imageInput = document.getElementById("productImage");
+
+    if (!name || !price) {
+      alert("Name and Price are required!");
+      return;
     }
 
-    function showForm(categoryName) {
-      currentCategory = categoryName;
-      document.getElementById("formContainer").style.display = "block";
-      document.getElementById("formTitle").innerText = `Add Product to ${categoryName}`;
-    }
+    let cat = categories.find(c => c.name === currentCategory);
 
-    function saveProduct() {
-      if (!currentCategory) {
-        alert("Please choose a category first.");
-        return;
-      }
-      let name = document.getElementById("productName").value.trim();
-      let price = document.getElementById("productPrice").value.trim();
-      let desc = document.getElementById("productDesc").value.trim();
-      let imageInput = document.getElementById("productImage");
-
-      if (!name || !price) {
-        alert("Name and Price are required!");
-        return;
-      }
-
+    if (imageInput.files && imageInput.files[0]) {
       let reader = new FileReader();
       reader.onload = function(e) {
-        let imgData = e.target.result;
-        let cat = categories.find(c => c.name === currentCategory);
-        cat.products.push({ name, price, desc, image: imgData });
+        cat.products.push({ name, price, desc, image: e.target.result });
         saveData();
         renderCategories();
-        clearForm();
       };
-      if (imageInput.files[0]) {
-        reader.readAsDataURL(imageInput.files[0]);
-      } else {
-        let cat = categories.find(c => c.name === currentCategory);
-        cat.products.push({ name, price, desc, image: "" });
-        saveData();
-        renderCategories();
-        clearForm();
-      }
+      reader.readAsDataURL(imageInput.files[0]);
+    } else {
+      cat.products.push({ name, price, desc, image: "" });
+      saveData();
+      renderCategories();
     }
+  }
 
-    function clearForm() {
-      document.getElementById("formContainer").style.display = "none";
-      document.getElementById("productName").value = "";
-      document.getElementById("productPrice").value = "";
-      document.getElementById("productDesc").value = "";
-      document.getElementById("productImage").value = "";
+  function resetWebsite() {
+    if (confirm("Are you sure you want to reset everything?")) {
+      localStorage.clear();
+      categories = [];
+      renderCategories();
     }
+  }
 
-    function renderCategories() {
-      let container = document.getElementById("categoriesContainer");
-      container.innerHTML = "";
-      categories.forEach(cat => {
-        let section = document.createElement("div");
-        section.className = "category";
-        section.innerHTML = `
-          <h2 class="banner">
-            ${cat.name}
-            <button onclick="showForm('${cat.name}')">+ Add Product</button>
-          </h2>
-          <div class="products"></div>
-        `;
-        let productsContainer = section.querySelector(".products");
-        cat.products.forEach(p => {
-          let div = document.createElement("div");
-          div.className = "product";
-          div.innerHTML = `
-            ${p.image ? `<img src="${p.image}" alt="${p.name}">` : ""}
-            <h3>${p.name}</h3>
-            <p><b>Price:</b> PKR ${p.price}</p>
-            ${p.desc ? `<p>${p.desc}</p>` : ""}
-          `;
-          productsContainer.appendChild(div);
-        });
-        container.appendChild(section);
-      });
-    }
+  function setTheme() {
+    document.body.style.setProperty("--primary-color", document.getElementById("primaryColor").value);
+    document.body.style.setProperty("--secondary-color", document.getElementById("secondaryColor").value);
+    document.body.style.setProperty("--bg-color", document.getElementById("bgColor").value);
+    let g1 = document.getElementById("grad1").value;
+    let g2 = document.getElementById("grad2").value;
+    document.body.style.setProperty("--gradient", `linear-gradient(45deg, ${g1}, ${g2})`);
+  }
 
-    function saveData() {
-      localStorage.setItem("categories", JSON.stringify(categories));
-    }
+  renderCategories();
+</script>
 
-    function resetWebsite() {
-      if (confirm("Are you sure? This will remove all categories and products.")) {
-        localStorage.removeItem("categories");
-        categories = [];
-        renderCategories();
-      }
-    }
-
-    // 🎨 Apply gradient to all banners
-    function applyGradient() {
-      let c1 = document.getElementById("color1").value;
-      let c2 = document.getElementById("color2").value;
-      let gradient = `linear-gradient(45deg, ${c1}, ${c2})`;
-
-      // header
-      document.getElementById("mainHeader").style.background = gradient;
-
-      // form save button
-      document.querySelectorAll(".form-section button").forEach(btn => {
-        btn.style.background = gradient;
-      });
-
-      // category banners
-      document.querySelectorAll(".category h2").forEach(banner => {
-        banner.style.background = gradient;
-      });
-    }
-  </script>
 </body>
 </html>
