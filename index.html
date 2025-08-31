@@ -7,13 +7,13 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0; padding: 0;
-      background: var(--bg-color, #f9f9f9);
-      color: var(--primary-color, #333);
+      background: #f9f9f9;
+      color: #333;
     }
     header {
       padding: 20px;
       text-align: center;
-      background: var(--gradient, linear-gradient(45deg, #ff7eb3, #65d6ce));
+      background: linear-gradient(45deg, #ff7eb3, #65d6ce);
       color: white;
       font-size: 24px;
       font-weight: bold;
@@ -23,7 +23,7 @@
       gap: 10px;
       justify-content: center;
       padding: 15px;
-      background: var(--secondary-color, #eee);
+      background: #eee;
     }
     #controls input, #controls button {
       padding: 8px;
@@ -68,13 +68,6 @@
       margin: 5px 0;
       padding: 8px;
     }
-    #themeControls {
-      margin: 20px;
-      padding: 15px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
   </style>
 </head>
 <body>
@@ -85,17 +78,6 @@
   <input type="text" id="categoryName" placeholder="New Category Name">
   <button onclick="addCategory()">+ Add Category</button>
   <button onclick="resetWebsite()">Reset Website</button>
-</div>
-
-<div id="themeControls">
-  <h3>🎨 Theme Settings</h3>
-  <label>Primary Color: <input type="color" id="primaryColor" onchange="setTheme()"></label>
-  <label>Secondary Color: <input type="color" id="secondaryColor" onchange="setTheme()"></label>
-  <label>Background Color: <input type="color" id="bgColor" onchange="setTheme()"></label>
-  <label>Gradient Banner: 
-    <input type="color" id="grad1" onchange="setTheme()">
-    <input type="color" id="grad2" onchange="setTheme()">
-  </label>
 </div>
 
 <div id="categories"></div>
@@ -132,14 +114,14 @@
           ${cat.products.map(p => `
             <div class="product">
               ${p.image ? `<img src="${p.image}" alt="">` : ""}
-              <h4>${p.name}</h4>
-              <p>PKR ${p.price}</p>
+              ${p.name ? `<h4>${p.name}</h4>` : ""}
+              ${p.price ? `<p>PKR ${p.price}</p>` : ""}
               ${p.desc ? `<small>${p.desc}</small>` : ""}
             </div>`).join("")}
         </div>
         <div class="form-section" id="form-${cat.name}">
-          <input type="text" id="productName" placeholder="Product Name">
-          <input type="number" id="productPrice" placeholder="Price in PKR">
+          <input type="text" id="productName" placeholder="Product Name (optional)">
+          <input type="number" id="productPrice" placeholder="Price in PKR (optional)">
           <textarea id="productDesc" placeholder="Description (optional)"></textarea>
           <input type="file" id="productImage">
           <button onclick="saveProduct()">Save Product</button>
@@ -165,11 +147,6 @@
     let desc = document.getElementById("productDesc").value.trim();
     let imageInput = document.getElementById("productImage");
 
-    if (!name || !price) {
-      alert("Name and Price are required!");
-      return;
-    }
-
     let cat = categories.find(c => c.name === currentCategory);
 
     if (imageInput.files && imageInput.files[0]) {
@@ -193,15 +170,6 @@
       categories = [];
       renderCategories();
     }
-  }
-
-  function setTheme() {
-    document.body.style.setProperty("--primary-color", document.getElementById("primaryColor").value);
-    document.body.style.setProperty("--secondary-color", document.getElementById("secondaryColor").value);
-    document.body.style.setProperty("--bg-color", document.getElementById("bgColor").value);
-    let g1 = document.getElementById("grad1").value;
-    let g2 = document.getElementById("grad2").value;
-    document.body.style.setProperty("--gradient", `linear-gradient(45deg, ${g1}, ${g2})`);
   }
 
   renderCategories();
