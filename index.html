@@ -31,6 +31,7 @@
       border-radius: 12px;
       background: #fff0f6;
       padding: 1rem;
+      position: relative;
     }
     .section-title {
       font-size: 1.5rem;
@@ -38,6 +39,18 @@
       color: #b35c85;
       margin-bottom: 1rem;
       cursor: pointer;
+    }
+    .delete-section-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff4d6d;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
     }
     .products {
       display: grid;
@@ -141,6 +154,14 @@
       renderSections();
     }
 
+    function deleteSection(sectionId) {
+      if (confirm('Delete this entire section?')) {
+        categories = categories.filter(c => c.id !== sectionId);
+        saveCategories();
+        renderSections();
+      }
+    }
+
     function addProduct(categoryId, product) {
       const cat = categories.find(c => c.id === categoryId);
       if (cat) {
@@ -174,7 +195,14 @@
           category.name = title.textContent.trim() || 'Untitled Section';
           saveCategories();
         };
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-section-btn';
+        deleteBtn.textContent = 'Delete Section';
+        deleteBtn.onclick = () => deleteSection(category.id);
+
         section.appendChild(title);
+        section.appendChild(deleteBtn);
 
         // Form
         const form = document.createElement('form');
