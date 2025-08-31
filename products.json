@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "Pink Satin Scarf",
+    "price": 19.99,
+    "image": "https://via.placeholder.com/250x250/f499c1/ffffff?text=Pink+Scarf",
+    "description": "Soft satin scarf with a lovely pink shade."
+  },
+  {
+    "id": 2,
+    "name": "Lavender Candle",
+    "price": 14.99,
+    "image": "https://via.placeholder.com/250x250/b3a2ce/ffffff?text=Lavender+Candle",
+    "description": "Relaxing lavender scented candle."
+  }
+]
