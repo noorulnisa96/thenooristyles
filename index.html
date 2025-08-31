@@ -5,114 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Product Website</title>
   <style>
-    body {
-      font-family: "Poppins", sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-      color: #333;
-    }
-    header {
-      background-color: #ff6f61;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .controls {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin: 1rem;
-      flex-wrap: wrap;
-    }
-    .controls select, .controls button {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .controls select {
-      background-color: #fff;
-      border: 1px solid #ccc;
-    }
-    .controls button {
-      background-color: #333;
-      color: #fff;
-    }
-    .form-section {
-      margin: 1rem auto;
-      padding: 1rem;
-      background: #fff;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    }
-    .form-section input, .form-section textarea {
-      width: 100%;
-      margin: 0.5rem 0;
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-    .form-section button {
-      background: #ff6f61;
-      color: #fff;
-      padding: 0.6rem;
-      width: 100%;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    .category {
-      margin: 2rem auto;
-      padding: 1rem;
-      width: 95%;
-      max-width: 1200px;
-    }
-    .category h2 {
-      border-bottom: 2px solid #ff6f61;
-      padding-bottom: 0.5rem;
-      color: #ff6f61;
-    }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .product {
-      background: #fff;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .product img {
-      max-width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .product h3 {
-      margin: 0.5rem 0;
-    }
-    .reset-btn {
-      margin: 2rem auto;
-      display: block;
-      background: red;
-      color: white;
-      padding: 0.8rem 1.2rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
+    body {font-family:"Poppins",sans-serif;margin:0;padding:0;background:#f9f9f9;color:#333;}
+    header {background:#ff6f61;color:#fff;padding:1rem;text-align:center;font-size:1.5rem;font-weight:bold;}
+    .controls {display:flex;gap:1rem;justify-content:center;margin:1rem;flex-wrap:wrap;}
+    .controls select,.controls button {padding:0.5rem 1rem;border:none;border-radius:6px;font-size:1rem;cursor:pointer;}
+    .controls select {background:#fff;border:1px solid #ccc;}
+    .controls button {background:#333;color:#fff;}
+    .form-section {margin:1rem auto;padding:1rem;background:#fff;border-radius:10px;width:90%;max-width:500px;box-shadow:0 3px 8px rgba(0,0,0,0.1);}
+    .form-section input,.form-section textarea {width:100%;margin:0.5rem 0;padding:0.6rem;border:1px solid #ccc;border-radius:6px;font-size:1rem;}
+    .form-section button {background:#ff6f61;color:#fff;padding:0.6rem;width:100%;border:none;border-radius:6px;cursor:pointer;font-size:1rem;}
+    .category {margin:2rem auto;padding:1rem;width:95%;max-width:1200px;}
+    .category h2 {border-bottom:2px solid #ff6f61;padding-bottom:0.5rem;color:#ff6f61;}
+    .products {display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem;}
+    .product {background:#fff;padding:1rem;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1);text-align:center;}
+    .product img {max-width:100%;height:150px;object-fit:cover;border-radius:8px;}
+    .product h3 {margin:0.5rem 0;}
+    .reset-btn {margin:2rem auto;display:block;background:red;color:#fff;padding:0.8rem 1.2rem;border:none;border-radius:6px;cursor:pointer;font-size:1rem;}
   </style>
 </head>
 <body>
@@ -149,21 +57,29 @@
     }
 
     function showForm() {
+      if (categories.length === 0) {
+        alert("Please add a category first!");
+        return;
+      }
       document.getElementById("formContainer").style.display = "block";
     }
 
     function saveProduct() {
-      let name = document.getElementById("productName").value;
-      let price = document.getElementById("productPrice").value;
-      let desc = document.getElementById("productDesc").value;
+      let name = document.getElementById("productName").value.trim();
+      let price = document.getElementById("productPrice").value.trim();
+      let desc = document.getElementById("productDesc").value.trim();
       let imageInput = document.getElementById("productImage");
+      let category = document.getElementById("categorySelect").value;
 
+      if (!category) {
+        alert("Please select a category.");
+        return;
+      }
       if (!name || !price) {
         alert("Name and Price are required!");
         return;
       }
 
-      let category = document.getElementById("categorySelect").value;
       let reader = new FileReader();
       reader.onload = function(e) {
         let imgData = e.target.result;
@@ -172,11 +88,7 @@
         });
         saveData();
         renderCategories();
-        document.getElementById("formContainer").style.display = "none";
-        document.getElementById("productName").value = "";
-        document.getElementById("productPrice").value = "";
-        document.getElementById("productDesc").value = "";
-        document.getElementById("productImage").value = "";
+        clearForm();
       };
       if (imageInput.files[0]) {
         reader.readAsDataURL(imageInput.files[0]);
@@ -186,8 +98,16 @@
         });
         saveData();
         renderCategories();
-        document.getElementById("formContainer").style.display = "none";
+        clearForm();
       }
+    }
+
+    function clearForm() {
+      document.getElementById("formContainer").style.display = "none";
+      document.getElementById("productName").value = "";
+      document.getElementById("productPrice").value = "";
+      document.getElementById("productDesc").value = "";
+      document.getElementById("productImage").value = "";
     }
 
     function renderCategories() {
